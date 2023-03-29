@@ -1,5 +1,5 @@
 import React from 'react';
 
-export const ConnectionState = ({ isConnected }) => {
-  return <p>State: { '' + isConnected }</p>;
+export const ConnectionState = ({ isConnected, serverId }) => {
+  return <p>State: { `${isConnected} (${serverId})` }</p>;
 }
