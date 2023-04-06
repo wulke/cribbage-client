@@ -17,3 +17,4 @@
 [socket.io with react](https://socket.io/how-to/use-with-react)
 [cardsJS](https://github.com/richardschneider/cardsJS)
 [react-router-dom](https://reactrouter.com/en/main)
+[vitest](https://vitest.dev/guide/)

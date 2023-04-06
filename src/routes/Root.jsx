@@ -3,6 +3,7 @@ import { socket } from '../socket';
 import { ConnectionState } from '../components/ConnectionState';
 import { ConnectionManager } from '../components/ConnectionManager';
 import { Outlet } from 'react-router-dom';
+import { SideBar } from '../components/SideBar';
 
 const App = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
@@ -31,6 +32,7 @@ const App = () => {
     <div className="App">
       <ConnectionState isConnected={ isConnected } serverId={ serverId } />
       <ConnectionManager />
+      <SideBar />
       <Outlet />
     </div>
   );
