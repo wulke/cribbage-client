@@ -18,3 +18,4 @@
 [cardsJS](https://github.com/richardschneider/cardsJS)
 [react-router-dom](https://reactrouter.com/en/main)
 [vitest](https://vitest.dev/guide/)
+https://github.com/deck-of-cards/standard-deck

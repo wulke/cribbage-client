@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { socket } from '../socket';
+import { CutForDeal } from './game/CutForDeal';
 
 const OpenGame = ({ onLeave, onReady }) => {
   return (
@@ -11,11 +12,19 @@ const OpenGame = ({ onLeave, onReady }) => {
   );
 };
 
+const InProgressGame = ({ game }) => {
+  return (
+    <>
+      <CutForDeal game={game} />
+    </>
+  );
+};
+
 export const Game = () => {
   const { gameId } = useParams();
   const navigate = useNavigate();
-  const [gameState, setGameState] = useState(null);
-  const onGetGame = (game) => setGameState(game);
+  const [game, setGame] = useState(null);
+  const onGetGame = (game) => setGame(game);
   const leaveGame = () => {
     // @todo check that game is not in progress?
     socket.emit('leave_game', gameId, () => {});
@@ -34,9 +43,12 @@ export const Game = () => {
   return (
     <div>
       <p>Game: {gameId}</p>
-      <p>State: {JSON.stringify(gameState)}</p>
-      {gameState?.status === "Open" && (
+      <p>State: {JSON.stringify(game)}</p>
+      {game?.status === "Open" && (
         <OpenGame onLeave={leaveGame} onReady={onReady} />
+      )}
+      {game?.status === "In Progress" && (
+        <InProgressGame game={game} />
       )}
     </div>
   );

@@ -36,11 +36,11 @@ export const GameLobby = () => {
       </ul>
       <h4>In Progress Games</h4>
       <ul className='in-progress-games'>
-        {games.filter(isInProgress).map((game, index) => (<li key={index}>{game.id} <button onClick={() => navigate(`games/${game.id}`)}>View</button></li>))}
+        {games.filter(isInProgress).map((game, index) => (<li key={index}>{game.id} <button onClick={() => navigate(`/game/${game.id}`)}>View</button></li>))}
       </ul>
       <h4>Complete Games</h4>
       <ul className='complete-games'>
-        {games.filter(isComplete).map((game, index) => (<li key={index}>{game.id}<button onClick={() => navigate(`games/${game.id}`)}>View</button></li>))}
+        {games.filter(isComplete).map((game, index) => (<li key={index}>{game.id}<button onClick={() => navigate(`/game/${game.id}`)}>View</button></li>))}
       </ul>
     </div>
   );
