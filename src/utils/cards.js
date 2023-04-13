@@ -53,7 +53,7 @@ import cardAS from 'cardsJS/cards/AS.svg';
 import cardAD from 'cardsJS/cards/AD.svg';
 
 const suits = ['C','H','S','D'];
-const values = ['A','2','3','4','5','6','7','8','T','J','Q','K'];
+const values = ['A','2','3','4','5','6','7','8','9','T','J','Q','K'];
 const toRank = (card) => card % 13;
 const toSuit = (card) => suits[Math.floor(card / 13)];
 const toValue = (card) => values[toRank(card)];
