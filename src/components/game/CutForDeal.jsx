@@ -15,6 +15,7 @@ const Cuts = ({ game }) => {
 };
 
 export const CutForDeal = ({ game }) => {
+  // @todo some notification if the cuts were equal and we are re-cutting
   if (game.state !== 'Cut For Dealer') {
     return <Cuts game={game} />;
   };
