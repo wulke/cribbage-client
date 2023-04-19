@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { socket } from '../socket';
+import { toString } from '../utils/cards';
+import { Crib } from './game/Crib';
 import { CutForDeal } from './game/CutForDeal';
+import { Hand } from './game/Hand';
 
 const OpenGame = ({ onLeave, onReady }) => {
   return (
@@ -13,10 +16,35 @@ const OpenGame = ({ onLeave, onReady }) => {
 };
 
 const InGame = ({ game }) => {
+  const [onCardClick, setOnCardClick] = useState(() => (card) => console.info(`Clicked card: ${toString(card)}`));
+  const throwToCrib = (card) => socket.emit('throw_to_crib', game.id, card, () => console.info(`Throwing ${card} to crib.`));
+
+  useEffect(() => {
+    console.info(`State changed: ${game.state}`);
+    switch(game.state) {
+      case 'Cut For Dealer':
+        break;
+      case 'New Hand':
+        if (game.nextDealer === socket.id) {
+          console.info('I am the dealer, dealing new hand...');
+          socket.emit('new_hand', game.id, console.debug);
+        }
+        break;
+      case 'Throw Crib':
+        setOnCardClick(() => throwToCrib);
+        break;
+      default:
+        console.warn(`Unknown state: ${game.state}`);
+        break;
+    }
+  }, [game.state]);
+
   // @todo layout hand + board
   return (
     <div>
       <CutForDeal game={game} />
+      <Hand game={game} onCardClick={onCardClick} />
+      <Crib game={game} />
     </div>
   );
 };
@@ -43,10 +71,6 @@ export const Game = () => {
       socket.off('get_game', onGetGame);
     };
   }, []);
-
-  useEffect(() => {
-    console.info(`State changed: ${game.state}`);
-  }, [game.state]);
 
   return (
     <div>

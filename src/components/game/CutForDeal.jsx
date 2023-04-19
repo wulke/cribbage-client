@@ -1,3 +1,4 @@
+import React from 'react';
 import 'cardsJS/cards.css';
 import cardBack from 'cardsJS/cards/BLUE_BACK.svg';
 import { socket } from '../../socket';
