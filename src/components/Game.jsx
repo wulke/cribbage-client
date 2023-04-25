@@ -4,6 +4,7 @@ import { socket } from '../socket';
 import { toString } from '../utils/cards';
 import { Crib } from './game/Crib';
 import { CutForDeal } from './game/CutForDeal';
+import { CutForHand } from './game/CutForHand';
 import { Hand } from './game/Hand';
 
 const OpenGame = ({ onLeave, onReady }) => {
@@ -17,14 +18,17 @@ const OpenGame = ({ onLeave, onReady }) => {
 
 const InGame = ({ game }) => {
   const [onCardClick, setOnCardClick] = useState(() => (card) => console.info(`Clicked card: ${toString(card)}`));
+  const noClick = (card) => {};
   const throwToCrib = (card) => socket.emit('throw_to_crib', game.id, card, () => console.info(`Throwing ${card} to crib.`));
 
   useEffect(() => {
     console.info(`State changed: ${game.state}`);
     switch(game.state) {
       case 'Cut For Dealer':
+        setOnCardClick(() => noClick);
         break;
       case 'New Hand':
+        setOnCardClick(() => noClick);
         if (game.nextDealer === socket.id) {
           console.info('I am the dealer, dealing new hand...');
           socket.emit('new_hand', game.id, console.debug);
@@ -32,6 +36,9 @@ const InGame = ({ game }) => {
         break;
       case 'Throw Crib':
         setOnCardClick(() => throwToCrib);
+        break;
+      case 'Cut For Hand':
+        setOnCardClick(() => noClick);
         break;
       default:
         console.warn(`Unknown state: ${game.state}`);
@@ -42,9 +49,9 @@ const InGame = ({ game }) => {
   // @todo layout hand + board
   return (
     <div>
-      <CutForDeal game={game} />
       <Hand game={game} onCardClick={onCardClick} />
       <Crib game={game} />
+      <CutForHand game={game} />
     </div>
   );
 };
@@ -80,6 +87,9 @@ export const Game = () => {
         <OpenGame onLeave={leaveGame} onReady={onReady} />
       )}
       {game?.status === "In Progress" && (
+        <CutForDeal game={game} />
+      )}
+      {game?.status === "In Progress" && game?.state !== 'Cut For Dealer' && (
         <InGame game={game} />
       )}
       {game?.status === "Complete" && (
