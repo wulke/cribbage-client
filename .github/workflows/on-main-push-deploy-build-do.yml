@@ -51,7 +51,13 @@ jobs:
           username: ${{secrets.USERNAME}} # username of approved user
           key: ${{secrets.KEY}} # private or public key of the server
           script: |
-            docker kill $(docker ps -q)
+            # stop running container
+            docker stop $(echo ${{ env.IMAGE_NAME }})
+            # remove old container
+            docker rm $(echo ${{ env.IMAGE_NAME }})
+            # log into github registry
             docker login ${{ env.REGISTRY }} -u ${{ env.ACTOR }} -p ${{ secrets.GITHUB_TOKEN }}
+            # pull latest docker image
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
-            docker run -dit -p 8080:80 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+            # run latest docker image
+            docker run -dit -p 8080:80 --name ${{ env.IMAGE_NAME }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main 
