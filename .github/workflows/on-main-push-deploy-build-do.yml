@@ -53,5 +53,5 @@ jobs:
           script: |
             docker kill $(docker ps -q)
             docker login ${{ env.REGISTRY }} -u ${{ env.ACTOR }} -p ${{ secrets.GITHUB_TOKEN }}
-            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-            docker run -dit -p 80:80 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+            docker run -dit -p 80:80 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
