@@ -7,6 +7,7 @@ env:
   ACTOR: ${{ github.actor }}
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  CONTAINER_NAME: cribbage-ui
 
 jobs:
   build-and-deploy:
@@ -52,12 +53,12 @@ jobs:
           key: ${{secrets.KEY}} # private or public key of the server
           script: |
             # stop running container
-            docker stop $(echo ${{ env.IMAGE_NAME }})
+            docker stop $(echo ${{ env.CONTAINER_NAME }})
             # remove old container
-            docker rm $(echo ${{ env.IMAGE_NAME }})
+            docker rm $(echo ${{ env.CONTAINER_NAME }})
             # log into github registry
             docker login ${{ env.REGISTRY }} -u ${{ env.ACTOR }} -p ${{ secrets.GITHUB_TOKEN }}
             # pull latest docker image
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
             # run latest docker image
-            docker run -dit -p 8080:80 --name ${{ env.IMAGE_NAME }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main 
+            docker run -dit -p 8080:80 --name ${{ env.CONTAINER_NAME }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main 
