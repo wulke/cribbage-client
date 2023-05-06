@@ -1,7 +1,7 @@
 import React from 'react';
 import { socket } from '../../socket';
 import { SVGS, toString } from '../../utils/cards';
-import cardBack from 'cardsJS/cards/BLUE_BACK.svg';
+import cardBack from 'cardsJS/cards/Blue_Back.svg';
 
 export const Hand = ({ game, onCardClick }) => {
   // @todo shuffle + dealing animations

@@ -1,0 +1,41 @@
+name: Deploy to DigitalOcean Droplet
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install test, and build
+        run: |
+          npm install
+          # npm test
+          npm build
+        env:
+          CI: true
+      - name: Publish to Github Packages Registry
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: wulke/cribbage-client/cribbage-client-image
+          registry: docker.pkg.github.com
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          dockerfile: Dockerfile-prod
+          tags: latest
+      # - name: Deploy cribbage-client ui
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{secrets.HOST}} # IP address of the digital ocean host
+      #     username: ${{secrets.USERNAME}} # username of approved user
+      #     key: ${{secrets.KEY}} # private or public key of the server
+      #     script: |
+      #       cd ~/cribbage-client
+      #       git pull origin main
+      #       npm install
+      #       pm2 restart cribbage-client

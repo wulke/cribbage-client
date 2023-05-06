@@ -1,5 +1,5 @@
 import React from 'react';
-import cardBack from 'cardsJS/cards/BLUE_BACK.svg';
+import cardBack from 'cardsJS/cards/Blue_Back.svg';
 
 export const Crib = ({ game }) => {
   // @todo dynamically display the card face if game.state === GameState.COUNT_CRIB

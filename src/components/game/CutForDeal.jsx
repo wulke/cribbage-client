@@ -1,6 +1,6 @@
 import React from 'react';
 import 'cardsJS/cards.css';
-import cardBack from 'cardsJS/cards/BLUE_BACK.svg';
+import cardBack from 'cardsJS/cards/Blue_Back.svg';
 import { socket } from '../../socket';
 import { toString, SVGS } from '../../utils/cards';
 
