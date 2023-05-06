@@ -12,7 +12,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Install test, and build
+      - name: Install, test, and build
         run: |
           npm install
           # npm test
