@@ -43,13 +43,13 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-      - name: Deploy cribbage-client docker image to DigitalOcean droplet
+      - name: Pull docker image into DigitalOcean droplet
         uses: appleboy/ssh-action@master
         with:
           host: ${{secrets.HOST}} # IP address of the digital ocean host
           username: ${{secrets.USERNAME}} # username of approved user
           key: ${{secrets.KEY}} # private or public key of the server
-          envs: {{ env.IMAGE_NAME }},{{ env.REGISTRY }},{{ github.actor }},{{ secrets.GITHUB_TOKEN}}
+          # envs: {{ env.IMAGE_NAME }},{{ env.REGISTRY }},{{ github.actor }},{{ secrets.GITHUB_TOKEN}}
           script: |
             docker stop $(docker ps -a -q)
             docker login ${{ env.REGISTRY }} -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
