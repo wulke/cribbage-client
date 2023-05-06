@@ -4,6 +4,7 @@ on:
     branches:
       - main
 env:
+  ACTOR: ${{ github.actor }}
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
@@ -49,9 +50,8 @@ jobs:
           host: ${{secrets.HOST}} # IP address of the digital ocean host
           username: ${{secrets.USERNAME}} # username of approved user
           key: ${{secrets.KEY}} # private or public key of the server
-          # envs: {{ env.IMAGE_NAME }},{{ env.REGISTRY }},{{ github.actor }},{{ secrets.GITHUB_TOKEN}}
           script: |
-            docker stop $(docker ps -a -q)
-            docker login ${{ env.REGISTRY }} -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+            docker kill $(docker ps -q)
+            docker login ${{ env.REGISTRY }} -u ${{ env.ACTOR }} -p ${{ secrets.GITHUB_TOKEN }}
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
             docker run -dit -p 80:80 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
